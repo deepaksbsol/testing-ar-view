@@ -49,14 +49,14 @@
 <body>
   <model-viewer
     id="modelViewer"
-    src="https://deepaksbsol.github.io/testing-ar-view/ball.glb"
+    src="https://deepaksbsol.github.io/testing-ar-view/PPI561591.glb"
     ar
     ar-modes="scene-viewer webxr quick-look"
     camera-controls
     auto-rotate
     shadow-intensity="1"
     exposure="1"
-    ios-src="https://deepaksbsol.github.io/testing-ar-view/ball.glb"
+    ios-src="https://deepaksbsol.github.io/testing-ar-view/PI561591.glb"
     xr-environment
     alt="3D model">
     
@@ -85,7 +85,7 @@
     
     // Alternative AR launch for Android
     function launchSceneViewer() {
-      const modelUrl = encodeURIComponent('https://deepaksbsol.github.io/testing-ar-view/ball.glb');
+      const modelUrl = encodeURIComponent('https://deepaksbsol.github.io/testing-ar-view/PI561591.glb');
       const fallbackUrl = encodeURIComponent(window.location.href);
       
       window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=${fallbackUrl};end`;
