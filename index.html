@@ -1,52 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>3D Model AR Viewer</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
-      body {
-        margin: 0;
-        background: #000;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        font-family: sans-serif;
-      }
-
-      model-viewer {
-        flex: 1;
-        width: 100%;
-      }
-
-      .ar-button {
-        padding: 15px 25px;
-        font-size: 18px;
-        background: #00aaff;
+<head>
+  <title>3D Model AR Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { margin: 0; background: #000; }
+    model-viewer { 
+      width: 100vw; 
+      height: 100vh; 
+      --poster-color: transparent;
+    }
+    .ar-prompt {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <model-viewer
+    id="modelViewer"
+    src="78080.glb"
+    ar
+    ar-modes="scene-viewer webxr quick-look"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    exposure="1"
+    ios-src="https://deepaksbsol.github.io/glb-hosting/78080.glb"
+    xr-environment
+    alt="3D model">
+    
+    <div class="ar-prompt" slot="ar-button">
+      <button style="
+        background: #4285F4;
         color: white;
         border: none;
-        border-radius: 8px;
-        margin: 10px auto;
+        padding: 12px 24px;
+        border-radius: 24px;
+        font-size: 16px;
         cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      }
+      ">View in AR</button>
+      <p id="ar-status" style="margin-top: 8px;"></p>
+    </div>
+  </model-viewer>
 
-      .ar-button:hover {
-        background: #008ecc;
+  <script>
+    const modelViewer = document.getElementById('modelViewer');
+    const arStatus = document.getElementById('ar-status');
+    
+    // Error handling
+    modelViewer.addEventListener('error', (event) => {
+      console.error('Model error:', event.detail);
+      arStatus.textContent = 'Failed to load 3D model';
+      arStatus.style.color = '#ff4444';
+    });
+    
+    modelViewer.addEventListener('ar-status', (event) => {
+      if (event.detail.status === 'failed') {
+        arStatus.textContent = 'AR not available: ' + (event.detail.message || 'Device not supported');
+        arStatus.style.color = '#ff4444';
       }
-    </style>
-  </head>
-  <body>
-    <model-viewer 
-      src="78080.glb"
-      camera-controls 
-      auto-rotate 
-      shadow-intensity="1" 
-      exposure="1" 
-      alt="3D model">
-    </model-viewer>
-
-    <a href="intent://arvr.google.com/scene-viewer/1.0?file=https://deepaksbsol.github.io/glb-hosting/78080.glb&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://deepaksbsol.github.io/glb-hosting/;end;">
-      <button class="ar-button">View in AR</button>
-    </a>
-  </body>
+    });
+    
+    // Alternative AR launch for Android
+    function launchSceneViewer() {
+      const modelUrl = encodeURIComponent('https://deepaksbsol.github.io/glb-hosting/78080.glb');
+      const fallbackUrl = encodeURIComponent(window.location.href);
+      
+      window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=${fallbackUrl};end`;
+    }
+    
+    // Check if we should use intent
+    if (/android/i.test(navigator.userAgent)) {
+      document.querySelector('[slot="ar-button"] button').addEventListener('click', launchSceneViewer);
+    }
+  </script>
+</body>
 </html>
