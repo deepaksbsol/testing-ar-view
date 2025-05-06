@@ -12,11 +12,12 @@
     }
     .ar-prompt {
       position: absolute;
-      bottom: 20px;
+      top: 20px; /* Changed from bottom to top */
       left: 50%;
       transform: translateX(-50%);
       color: white;
       text-align: center;
+      z-index: 1; /* Ensure it stays above the model */
     }
   </style>
 </head>
