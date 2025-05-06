@@ -23,7 +23,7 @@
 <body>
   <model-viewer
     id="modelViewer"
-    src="ball.glb"
+    src="https://deepaksbsol.github.io/testing-ar-view/ball.glb"
     ar
     ar-modes="scene-viewer webxr quick-look"
     camera-controls
@@ -55,7 +55,7 @@
     // Error handling
     modelViewer.addEventListener('error', (event) => {
       console.error('Model error:', event.detail);
-      arStatus.textContent = 'Failed to load 3D model';
+      arStatus.textContent = `Failed to load 3D model: ${event.detail.message}`;
       arStatus.style.color = '#ff4444';
     });
     
